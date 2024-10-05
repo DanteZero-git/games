@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+/* orbitron */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    div {
+        border: 1px solid green;
+        padding: 40px;
+
+        form {
+            text-align: center;
+            width: 450px;
+            height: 650px;
+            border: 1px solid black;
+            padding: 40px;
+
+            span {
+                display: flex;
+                width: 100%;
+                justify-content: space-between;
+
+                h1 {
+                    width: 50%;
+                    height: 60px;
+                    border: 1px solid red;
+                    font-family: orbitron;
+                    font-size: 36px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                }
+            }
+        }
+    }
+}
