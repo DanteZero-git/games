@@ -5,24 +5,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../styles/login-signup.css">
+    <!-- carga el css antes que el html -->
+    <link rel="preload" href="../styles/login-signup.css" as="style" onload="this.rel='stylesheet'">
+    <!--  -->
 </head>
 
 <body>
-    <div>
-        <form action="../../index.html" method="get">
-            <span>
-                <h1>Login</h1>
-                <h1>Sign Up</h1>
+    <div class="formContainer">
+        <form action="" method="get">
+            <span class="selector">
+                <h1>Login<input class="login" type="radio" value="0" id="login" name="radio" checked="true"></h1>
+                <h1>Sign Up<input class="signUp" type="radio" value="0" id="signup" name="radio"></h1>
             </span>
-            <label for="usuario">Usuario</label> <br>
-            <input type="text" id="usuario" name="usuario"> <br>
-            <label for="contraseña">Contraseña</label> <br>
-            <input type="text" id="contraseña" name="contraseña"> <br>
+            <fieldset class="fieldset">
+                <legend><img src="../../resources/icons/usuario.webp" class="icono"></img></legend>
+                <div id="contador1" class="contador validado"></div>
+                <input id="usuario" class="formField" type="text" name="usuario" minlength="6" maxlength="12"
+                    placeholder="Usuario">
+            </fieldset>
+            <fieldset class="fieldset">
+                <legend><img src="../../resources/icons/candado-cerrado.webp" class="icono"></img></legend>
+                <div id="contador2" class="contador"></div>
+                <input id="contraseña" class="formField" type="password" name="contraseña" minlength="8" maxlength="14"
+                    placeholder="Contraseña">
+            </fieldset>
+            <input type="hidden" name="opcion" value="0">
             <br>
-            <input type="submit" value="Sign Up">
+            <input type="submit" value="Enviar" id="enviar" disabled>
         </form>
+        <div></div>
     </div>
+
+    <script src="../js/login-signup.js"></script>
 </body>
 
 </html>
