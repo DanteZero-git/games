@@ -91,14 +91,8 @@ body {
                 border-radius: 8px;
                 padding: 20px;
                 position: relative;
-                transform-origin: -200px;
-                transform: rotateY(25deg);
-                transition: .5s;
-
-                &:hover {
-                    transform: rotateY(0deg) rotateX(0deg); 
-                    transition: .5s;
-                }
+                transform-origin: left;
+                transform: rotateY(30deg);
 
                 legend {
                     width: 120px;
@@ -126,18 +120,17 @@ body {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    color: white;
+                    color: grey;
                     font-family: orbitron;
-                    transition: .5s;
+                    transition: .3s ease-in;
                 }
 
                 .validado {
-                    box-shadow: inset 0 0 40px rgb(0, 0, 0);
                     width: 150px;
                     left: 15px;
-                    transition: 2s;
+                    transition: .3s ease-in;
+                    color: grey;
                 }
-
 
                 .formField {
                     width: 100%;
@@ -158,25 +151,32 @@ body {
                     transition: .4s;
                 }
 
-                .formField:focus:placeholder-shown,
-                .formField:hover:placeholder-shown {
+                .formField:focus:placeholder-shown {
                     letter-spacing: 12px;
                     cursor: pointer;
                     box-shadow: 0px 0px 0px transparent;
                     box-shadow: inset 0 -22px 20px black;
-                    background-color: black;
-                }
-
-                .formField:focus:not(:placeholder-shown),
-                .formField:hover:not(:placeholder-shown) {
-                    color: rgb(9, 255, 0);
-                    letter-spacing: 12px;
-                    background-color: black;
+                    background-color: rgba(0, 0, 0, 0.568);
                 }
 
                 .formField:not(:focus):not(:placeholder-shown) {
                     letter-spacing: 12px;
+                    background-color: rgba(0, 0, 0, 0.568);
                 }
+
+                .formField:focus:not(:placeholder-shown) {
+                    letter-spacing: 12px;
+                    background-color: rgba(0, 0, 0, 0.568);
+                }
+            }
+
+            .fieldset3d,
+            .fieldset:hover {
+                transform: rotateY(0deg);
+            }
+
+            .domCargado {
+                transition: .3s ease-in;
             }
         }
     }
