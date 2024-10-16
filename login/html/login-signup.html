@@ -12,7 +12,7 @@
 
 <body>
     <div class="formContainer">
-        <form action="" method="get">
+        <form action="test.php" method="get">
             <span class="selector">
                 <h1>Login<input class="login" type="radio" value="0" id="login" name="radio" checked="true"></h1>
                 <h1>Sign Up<input class="signUp" type="radio" value="0" id="signup" name="radio"></h1>
@@ -35,12 +35,15 @@
             </fieldset>
             <input type="hidden" name="opcion" value="0">
             <br>
-            <input type="submit" value="Enviar" id="enviar" disabled>
+            <div id="contenedorEnvioForm">
+                <input id="envioForm" class="envioForm" type="submit" value="Enviar" disabled>
+            </div>
         </form>
-        <div></div>
     </div>
-
+    <barras-component cantidad="50" alto="100vh" ancho="80px" tempo="10" animado>
+    </barras-component>
     <script src="../js/login-signup.js"></script>
+    <script src="../../resources/componentes/onda.js"></script>
 </body>
 
 </html>

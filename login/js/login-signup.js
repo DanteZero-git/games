@@ -2,6 +2,17 @@ const contador1 = document.getElementById("contador1")
 const contador2 = document.getElementById("contador2")
 const usuario = document.getElementById("usuario")
 const contraseña = document.getElementById("contraseña")
+const envioForm = document.getElementById("envioForm")
+
+
+// Comprueba si los inputs son validos y activa el boton de envio del formulario
+function validar() {
+    if (usuario.value.length >= usuario.minLength && contraseña.value.length >= contraseña.minLength ) {
+        console.log("ambos inputs son validos")
+        envioForm.parentNode.classList.add("elemento3d", "domCargado")
+        envioForm.removeAttribute("disabled")
+    }
+}
 
 // Dibuja y mueve el contador segun el minLength del input
 let varExt
@@ -36,19 +47,26 @@ window.onload = function () {
     contadorInput(usuario, contador1);
     contadorInput(contraseña, contador2);
     Array.from(document.getElementsByClassName("fieldset")).forEach(function (item) { item.classList.add("domCargado") })
-
+    document.getElementById("envioForm").classList.add("domCargado")
 }
 // eventos de 3d on click
 if (usuario.value) { usuario.parentNode.classList.add("fieldset3d") }
 usuario.parentNode.addEventListener("click", function () {
-    usuario.parentNode.classList.add("fieldset3d")
+    usuario.parentNode.classList.add("elemento3d")
     usuario.focus()
 })
 
 contraseña.parentNode.addEventListener("click", function () {
-    contraseña.parentNode.classList.add("fieldset3d")
+    contraseña.parentNode.classList.add("elemento3d")
     contraseña.focus()
 })
 // eventos de escritura en input
-usuario.addEventListener('input', function () { contadorInput(usuario, contador1) })
-contraseña.addEventListener('input', function () { contadorInput(contraseña, contador2) })
+usuario.addEventListener('input', function () {
+    contadorInput(usuario, contador1)
+    validar()
+})
+contraseña.addEventListener('input', function () { 
+    contadorInput(contraseña, contador2)
+    validar()
+})
+
