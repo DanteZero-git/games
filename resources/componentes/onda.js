@@ -18,8 +18,10 @@ class component extends HTMLElement {
 
                 li {
                 width: 20%;
-                border: 1px solid white;
-                opacity: .6;
+/*                 border: 1px solid white;
+ */                opacity: 1;
+                background-color: white;
+                filter: blur(8px);
                 }
             }
 
