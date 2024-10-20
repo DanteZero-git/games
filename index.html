@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>landing</title>
+    <link rel="stylesheet" href="src/landing/style/landing.css">
+</head>
+
+<body>
+    <header>
+        <fondo-onda img="1.jpg" cant="25" time=".2"></fondo-onda>
+    </header>
+    <main>
+        <div class="fondo">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <form class="form" action="test.php" method="get">
+            <span class="selector">
+                <h1>Login<input class="login" type="radio" value="0" id="login" name="radio" checked="true"></h1>
+                <h1>Sign Up<input class="signUp" type="radio" value="0" id="signup" name="radio"></h1>
+            </span>
+
+            <div class="bloqueInput">
+                <img src="src/icons/usuario.webp"></img src="src/icons/usuario.webp">
+                <input id="usuario" type="text" class="text" placeholder="Usuario" minlength="6" maxlength="10">
+                <span id="contador1"></span>
+            </div>
+
+            <div class="bloqueInput">
+                <img src="src/icons/candado-cerrado.webp"></img src="src/icons/usuario.webp">
+                <input type="password" class="text" placeholder="Contraseña" minlength="8" maxlength="14">
+                <span id="contador2"></span>
+            </div>
+
+            <div class="contenedorEnvio">
+                <input id="envioForm" class="envioForm" type="submit" value="Enviar" autocomplete="off" disabled>
+            </div>
+        </form>
+    </main>
+</body>
+</html>
