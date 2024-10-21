@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="src/landing/style/landing.css">
 </head>
 
-<body>
+<body id="body">
     <header>
         <fondo-onda img="1.jpg" cant="25" time=".2"></fondo-onda>
     </header>
@@ -27,15 +27,18 @@
             </span>
 
             <div class="bloqueInput">
-                <img src="src/icons/usuario.webp"></img src="src/icons/usuario.webp">
+                <img id="icon1" src="src/icons/usuario.webp"></img>
                 <input id="usuario" type="text" class="text" placeholder="Usuario" minlength="6" maxlength="10">
-                <span id="contador1"></span>
+                <img id="iconPass1"></img>
+                <div id="contador1" class="contador"></div>
             </div>
 
             <div class="bloqueInput">
-                <img src="src/icons/candado-cerrado.webp"></img src="src/icons/usuario.webp">
-                <input type="password" class="text" placeholder="Contraseña" minlength="8" maxlength="14">
-                <span id="contador2"></span>
+                <img id="icon2" src="src/icons/candado-cerrado.webp"></img>
+                <input id="contraseña" type="password" class="text" placeholder="Contraseña" minlength="6"
+                    maxlength="14">
+                <img id="iconPass2"></img>
+                <div id="contador2" class="contador"><span class="marca"></span></div>
             </div>
 
             <div class="contenedorEnvio">
@@ -44,4 +47,6 @@
         </form>
     </main>
 </body>
+<script type="module" src="src/landing/script/form.js"></script>
+
 </html>
