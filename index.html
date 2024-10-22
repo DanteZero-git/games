@@ -13,13 +13,14 @@
         <fondo-onda img="1.jpg" cant="25" time=".2"></fondo-onda>
     </header>
     <main>
-        <div class="fondo">
+        <!--         <div class="fondo">
             <div></div>
             <div></div>
             <div></div>
             <div></div>
             <div></div>
         </div>
+ -->
         <form class="form" action="test.php" method="get">
             <span class="selector">
                 <h1>Login<input class="login" type="radio" value="0" id="login" name="radio" checked="true"></h1>
@@ -27,23 +28,21 @@
             </span>
 
             <div class="bloqueInput">
-                <img id="icon1" src="src/icons/usuario.webp"></img>
+                <img id="icon1" src="src/icons/usuario.webp" alt="icono de usuario"></img>
                 <input id="usuario" type="text" class="text" placeholder="Usuario" minlength="6" maxlength="10">
-                <img id="iconPass1"></img>
+                <img id="iconPass1" src="src/icons/usuario.webp" alt="icono de usuario"></img>
                 <div id="contador1" class="contador"></div>
             </div>
 
             <div class="bloqueInput">
                 <img id="icon2" src="src/icons/candado-cerrado.webp"></img>
-                <input id="contraseña" type="password" class="text" placeholder="Contraseña" minlength="6"
-                    maxlength="14">
-                <img id="iconPass2"></img>
-                <div id="contador2" class="contador"><span class="marca"></span></div>
+                <input id="contraseña" type="password" class="text" placeholder="Contraseña" minlength="8"
+                    maxlength="12">
+                <img id="iconPass2" src="src/icons/candado-abierto.png" alt="icono candado abierto"></img>
+                <div id="contador2" class="contador"></div>
             </div>
 
-            <div class="contenedorEnvio">
-                <input id="envioForm" class="envioForm" type="submit" value="Enviar" autocomplete="off" disabled>
-            </div>
+            <input id="botonForm" class="botonForm" type="submit" value="Enviar" autocomplete="off" disabled>
         </form>
     </main>
 </body>
