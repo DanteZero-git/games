@@ -41,10 +41,6 @@ function dibujarContador(item1, item2) {
     const maxValue = item1.maxLength
     const simbolo1 = document.createElement("span")
     const simbolo2 = document.createElement("span")
-
-    simbolo1.innerText = " >"
-    simbolo1.classList.add("simbolo")
-    contador.appendChild(simbolo1)
     const marco = document.createElement("div")
 
     for (let i = 0; i < maxValue; i++) {
@@ -57,9 +53,6 @@ function dibujarContador(item1, item2) {
 
     marco.classList.add("marco")
     contador.appendChild(marco)
-    simbolo2.innerText = "<"
-    simbolo2.classList.add("simbolo")
-    contador.appendChild(simbolo2)
 }
 
 function selectorNumero(item1, item2) {
@@ -70,7 +63,7 @@ function selectorNumero(item1, item2) {
 
     listaItems.forEach(item => {
         if (item === seleccionado) {
-            item.style.fontSize = "18px"
+            item.style.fontSize = "16px"
             item.style.color = "white"
         } else {
             item.style.fontSize = "10px"
@@ -99,15 +92,17 @@ function selectorMarca(item1, item2) {
     const maxValue = item1.maxLength
     const contador = item2
     const marca = contador.getElementsByClassName("marca")
-
     inputValue === 0 ? marca[0].style.opacity = "0" : marca[0].style.opacity = ".6"
+
+    if (inputValue >= 1) {
+        marca[0].style.left = `calc((100% / ${maxValue}) * (${inputValue} - 1) + 5px)`;
+    }
+
     if (inputValue >= minValue) {
         marca[0].style.backgroundColor = "cyan";
     } else {
         marca[0].style.backgroundColor = "red";
     }
-
-    marca[0].style.left = `calc((100% / ${maxValue}) * ${inputValue})`;
 }
 
 function activarEnvio() {
@@ -126,9 +121,9 @@ function activarEnvio() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Aplica los estilos una vez que el DOM esté listo
-window.onload = main
+    window.onload = main
 })
 
 function main() {
