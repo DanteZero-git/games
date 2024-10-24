@@ -1,0 +1,23 @@
+[
+    {
+        "nombre": "Juego 1",
+        "url": "../buscaminas/buscaminas.html",
+        "imagen": "https://example.com/juego1.jpg"
+    },
+    {
+        "nombre": "Juego 2",
+        "imagen": "https://example.com/juego2.jpg"
+    },
+    {
+        "nombre": "Juego 3",
+        "imagen": "https://example.com/juego3.jpg"
+    },
+    {
+        "nombre": "Juego 4",
+        "imagen": "https://example.com/juego4.jpg"
+    },
+    {
+        "nombre": "Juego 5",
+        "imagen": "https://example.com/juego5.jpg"
+    }
+]

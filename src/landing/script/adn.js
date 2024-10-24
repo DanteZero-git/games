@@ -1,14 +1,15 @@
-const numeroItems = 18
-const tamañoItems = 40
-const retardoAnimacion = .8
+const numeroItems = 14
+const tamañoItems = 4
+const retardoAnimacion = 3
 const duracionAnimacion = 30
+const ancho = 200
 
 const contenedor = document.getElementById("contenedorAdn")
-contenedor.style.width = "300px"
+contenedor.style.width = "200px"
 contenedor.style.height = "100%"
 contenedor.style.border = "1px solid green"
 contenedor.style.position = "absolute"
-contenedor.style.left = "50px"
+contenedor.style.left = "75px"
 
 const elice1 = document.createElement("ul")
 elice1.id = "adn1"
@@ -46,7 +47,7 @@ function dibujarCirculos(par1, par2, par3, par4) {
     for (let i = 0; i < numeroItems; i++) {
         const li = document.createElement("li")
 
-        li.style.width = `${tamañoItems}px`
+        li.style.width = `${tamañoItems}vh`
         li.style.aspectRatio = "1/1"
         li.style.borderRadius = "50%"
         li.style.position = "relative"

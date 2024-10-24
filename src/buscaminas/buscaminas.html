@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca minas</title>
+    <link rel="stylesheet" href="style/buscaminas.css">
+</head>
+
+<body>
+    <header>
+        <h1>BUSCA MINAS</h1>
+    </header>
+    <main>
+        <div class="contenedor">
+            <aside>
+                <label for="cantidad">
+                    <input type="range" name="" id="cantidad" min="10" max="38" value="10" step="1">
+                    <span id="valorCantidad" class="valor"></span>
+                </label>
+            </aside>
+            <div id = "contenedorGrid" class="contenedorGrid">
+                <div id="grid" class="grid"></div>
+            </div>
+        </div>
+    </main>
+    <script type="module" src="script/buscaminas.js"></script>
+</body>
+
+</html>
