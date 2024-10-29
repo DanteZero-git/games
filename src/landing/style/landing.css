@@ -17,8 +17,12 @@ body {
         flex-grow: 1;
         height: 100%;
 
-        span {
-            color: white;
+        .poligono {
+            width: 420px;
+            height: 340px;
+            background-color: grey;
+            clip-path: polygon(60% 0, 100% 0%, 40% 100%, 0% 100%);
+            margin: -116px;
         }
     }
 

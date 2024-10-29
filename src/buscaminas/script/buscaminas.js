@@ -1,78 +1,96 @@
-const cantidad = document.getElementById("cantidad")
-const valorCantidad = Number(cantidad.value)
-const valorTextarea = document.getElementById("valorTextarea")
-const contenedorGrid = document.getElementById("contenedorGrid")
-const ramdom = 40 // es porcentaje
+let cantidad = document.getElementById("cantidad")
+const valorCantidad = Number(document.getElementById("cantidad").value)
+const textarea = document.getElementById("cantidadInfo")
+const contenedorTablero = document.getElementById("contenedorTablero")
+const ramdom = 20 // es porcentaje
 
 // valores min y max del input
 let valoresCuadricula = []
 for (let i = 20; i <= 30; i++) {
-    valoresCuadricula += (i < 30) ? `${i}, ` : `${i}`
+    valoresCuadricula.push(i)
 }
 
-// dibujar grid
-function dibujarGrid(par) {
-    contenedorGrid.innerHTML = ""
-    const grid = document.createElement("ul")
+let casillasTablero = []
+let bombas = []
 
-    grid.style.width = "100%"
-    grid.style.height = "100%"
-    grid.style.display = "grid"
-    grid.style.gridTemplateColumns = `repeat(${par}, 1fr)`
-    grid.style.gap = "2px"
-    grid.style.overflow = "auto"
-    grid.style.scrollbarWidth = "none"
+// dibujar flex
+function dibujarFlex(par) {
+    const clases = document.createElement("style")
+    clases.textContent += `
+        .contenedorTablero {
+            width: calc((100% - 10px) - 300px);
+            height: 100%;
+            overflow: auto;
+            scrollbarWidth: none;
+        }
 
-    for (let i = 0; i < par * par; i++) {
-        const li = document.createElement("li")
-        grid.appendChild(li)
-        li.classList.add("li")
-        li.id = `${i}`
-        li.innerHTML = `${i}`
+        .ul {
+            width: 100%;
+            display: flex;
+        }
 
-        const check = document.createElement("input")
-        li.appendChild(check)
-        check.classList.add("check")
-        check.type = "checkbox"
-    }
-    contenedorGrid.appendChild(grid)
-    document.head.appendChild(clases)
-}
+        .li {
+            position: relative;
+            width: calc(100% / ${cantidad.value});
+            aspect-ratio: 1/1;
+            margin: 2px;
+            border: 1px solid grey;
+            border-radius: 12%;
+            font-size: 8px;
+        }
 
-const clases = document.createElement("style")
-clases.textContent += `
-    .li {
-        position: relative;
-        height: 100%;
-        aspect-ratio: 1/1;
-        border: 1px solid grey;
-        border-radius: 12%;
-        font-size: 10px;
-    }
-
-    .check {
-        all: unset;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        cursor: pointer;
-    }
+        .check {
+            all: unset;
+            background-color: grey;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
 `
 
-// reconocer casillas
-function listarCasillas() {
-    return Array.from(contenedorGrid.querySelectorAll("li"))
+    contenedorTablero.innerHTML = ""
+    contenedorTablero.classList.add("contenedorTablero")
+    for (let a = 0; a < cantidad.value; a++) {
+        const ul = document.createElement("ul")
+        ul.classList.add("ul")
+        for (let b = 0; b < par; b++) {
+            const li = document.createElement("li")
+            li.classList.add("li")
+            li.id = `${a * cantidad.value + b}`
+            li.innerHTML = `${li.id}`
+
+            const check = document.createElement("input")
+            check.classList.add("check")
+            check.type = "checkbox"
+
+            li.appendChild(check)
+            ul.appendChild(li)
+        }
+        contenedorTablero.appendChild(ul)
+    }
+    document.head.appendChild(clases)
+    casillasTablero = Array.from(contenedorTablero.querySelectorAll("li"))
+}
+
+// añade como atributos fila y columna a cada casilla
+function posicionCasillas(par) {
+    par.forEach((element, index) => {
+        const fila = Math.floor(index / valorCantidad)
+        const columna = index % valorCantidad
+        element.setAttribute("fila", fila)
+        element.setAttribute("columna", columna)
+    })
 }
 
 // ramdomiza las bombas
-let bombas = []
 function ramdomBombas() {
-    const casillas = listarCasillas()
-    const cantidadBombas = Math.floor((casillas.length * ramdom) / 100)
+    bombas = []
+    const cantidadBombas = Math.floor((casillasTablero.length * ramdom) / 100)
     while (bombas.length < cantidadBombas) {
-        const numRamdom = Math.floor(Math.random() * casillas.length)
+        const numRamdom = Math.floor(Math.random() * casillasTablero.length)
         const item = document.getElementById(numRamdom)
         if (!bombas.includes(numRamdom)) { bombas.push(item) }
     }
@@ -82,164 +100,100 @@ function ramdomBombas() {
 // dibuja las bombas
 function dibujarBombas() {
     bombas.forEach(element => {
-        element.style.background = "red"
         element.classList.add("bomba")
+        element.style.backgroundColor = "red"
     })
 }
 
-// detecta fila y columna de casilla marcada
-let filas = []
-let columnas = []
-let fila
-let columna
 
-function localizar(item) {
-    item.style.border = "5px solid green"
-    // casillas por fila
-    for (let a = 0; a <= (valorCantidad - 1); a++) {
-        filas[a] = []
-        for (let b = 0; b < valorCantidad; b++) {
-            filas[a].push(`${b + (a * valorCantidad)}`)
-        }
-    }
-    // casillas por columna
-    for (let a = 0; a <= (valorCantidad - 1); a++) {
-        columnas[a] = []
-        for (let b = 0; b < valorCantidad; b++) {
-            columnas[a].push(`${a + (b * valorCantidad)}`)
-        }
-    }
-    // encontrar fila y columna de seleccionado
-    for (let i = 0; i < valorCantidad; i++) {
-        if (filas[i].includes(item.id)) {
-            fila = i
-        }
-        if (columnas[i].includes(item.id)) {
-            columna = i
-        }
-    }
-}
-
+// escribe los valores de bombas cercanas
 let casillasAbiertas = []
-function dibujarNum(fila, columna, filas, columnas, casillaAbierta) {
-    if (!casillasAbiertas.includes(casillaAbierta)) {
-        const input = casillaAbierta.children[0]
-        const border = "4px solid red"
+function reconocerCercanos(evento) {
+    const par = [evento.target.parentNode]
+    evento.disabled=true
+    let contadorBombas = 0
+    par.forEach(element => {
+        if (!bombas.includes(element)) {
+            const fila = element.getAttribute("fila")
+            const columna = element.getAttribute("columna")
 
-        if (!casillaAbierta.classList.contains("bomba")) {
-            // misma fila
-            if (columna > 0) {
-                const izqCentro = document.getElementById(Number(casillaAbierta.id) - 1)
-                if (!izqCentro.classList.contains("bomba")) {
-                    izqCentro.style.border = border
-                    izqCentro.classList.add("contieneNum")
-                } else {
-                    izqCentro.style.backgroundColor = "grey"
+            const cercanos = [
+                { posicion: "izq", casilla: document.getElementById(Number(element.id) - 1) },
+                { posicion: "cen", casilla: document.getElementById(Number(element.id)) },
+                { posicion: "der", casilla: document.getElementById(Number(element.id) + 1) },
+                { posicion: "arIzq", casilla: document.getElementById(Number(element.id) - 1 - Number(cantidad.value)) },
+                { posicion: "arCen", casilla: document.getElementById(Number(element.id) - Number(cantidad.value)) },
+                { posicion: "arDer", casilla: document.getElementById(Number(element.id) + 1 - Number(cantidad.value)) },
+                { posicion: "abIzq", casilla: document.getElementById(Number(element.id) - 1 + Number(cantidad.value)) },
+                { posicion: "abCen", casilla: document.getElementById(Number(element.id) + Number(cantidad.value)) },
+                { posicion: "abDer", casilla: document.getElementById(Number(element.id) + 1 + Number(cantidad.value)) }
+            ]
+            cercanos.forEach(item => {
+                if (item.casilla) {
+                    const filaItem = Number(item.casilla.getAttribute("fila"))
+                    const columnaItem = Number(item.casilla.getAttribute("columna"))
+                    console.log(columnaItem)
+                    const filaArriba = filaItem + 1 == fila && ["arIzq", "arCen", "arDer"].includes(item.posicion)
+                    const filaAbajo = filaItem - 1 == fila && ["abIzq", "abCen", "abDer"].includes(item.posicion)
+                    const filaCentro = filaItem == fila && ["izq", "cen", "der"].includes(item.posicion)
+
+                    if (item.casilla) {
+                        if ((filaArriba || filaCentro || filaAbajo) && !item.casilla.classList.contains("bomba")) {
+                            item.casilla.style.border = "2px solid black"
+                        }
+                        if (item.casilla.classList.contains("bomba") 
+                            && (columnaItem  == columna || columnaItem + 1 == columna || columnaItem - 1 == columna)) {
+                            contadorBombas += 1
+                        }
+                    }
                 }
-            }
-            if (columna < valorCantidad - 1) {
-                const derCentro = document.getElementById(Number(casillaAbierta.id) + 1)
-                if (!derCentro.classList.contains("bomba")) {
-                    derCentro.style.border = border
-                    derCentro.classList.add("contieneNum")
-                } else {
-                    derCentro.style.backgroundColor = "grey"
-                }
-            }
-            // fila superior
-            if (fila > 0 && columna > 0) {
-                const arIzq = document.getElementById(Number(casillaAbierta.id) - valorCantidad - 1)
-                if (!arIzq.classList.contains("bomba")) {
-                    arIzq.style.border = border
-                    arIzq.classList.add("contieneNum")
-                } else {
-                    arIzq.style.backgroundColor = "grey"
-                }
-            }
-            if (fila > 0) {
-                const arCen = document.getElementById(Number(casillaAbierta.id) - valorCantidad)
-                if (!arCen.classList.contains("bomba")) {
-                    arCen.style.border = border
-                    arCen.classList.add("contieneNum")
-                } else {
-                    arCen.style.backgroundColor = "grey"
-                }
-            }
-            if (fila > 0 && columna < valorCantidad - 1) {
-                const arDer = document.getElementById(Number(casillaAbierta.id) - valorCantidad + 1)
-                if (!arDer.classList.contains("bomba")) {
-                    arDer.style.border = border
-                    arDer.classList.add("contieneNum")
-                } else {
-                    arDer.style.backgroundColor = "grey"
-                }
-            }
-            // fila inferior
-            if (fila < valorCantidad - 1 && columna > 0) {
-                const abIzq = document.getElementById(Number(casillaAbierta.id) + valorCantidad - 1)
-                if (!abIzq.classList.contains("bomba")) {
-                    abIzq.style.border = border
-                    abIzq.classList.add("contieneNum")
-                } else {
-                    abIzq.style.backgroundColor = "grey"
-                }
-            }
-            if (fila < valorCantidad - 1) {
-                const abCen = document.getElementById(Number(casillaAbierta.id) + valorCantidad)
-                if (!abCen.classList.contains("bomba")) {
-                    abCen.style.border = border
-                    abCen.classList.add("contieneNum")
-                } else {
-                    abCen.style.backgroundColor = "grey"
-                }
-            }
-            if (fila < valorCantidad - 1 && columna < valorCantidad - 1) {
-                const abDer = document.getElementById(Number(casillaAbierta.id) + valorCantidad + 1)
-                if (!abDer.classList.contains("bomba")) {
-                    abDer.style.border = border
-                    abDer.classList.add("contieneNum")
-                } else {
-                    abDer.style.backgroundColor = "grey"
-                }
-            }
-        } else {
-            console.log("bomba")
+            })
+            element.style.fontSize = "22px"
+            element.style.display = "flex"
+            element.style.alignItems = "center"
+            element.style.justifyContent = "center"
+            element.innerHTML = contadorBombas
         }
-    }
+    })
+    console.log(casillasAbiertas)
+
+    /*     if (casillasAbiertas.length > 0) {
+            reconocerCercanos()
+        }
+     */
 }
 
-function prepararJuego() {
+// ###############################################################
+function prepararJuego(evento) { // se recoge el evento y se pasa a la funcion 'calcularCercanos'
+    cantidad.addEventListener("mousedown", () => {
+        textarea.style.color = "grey"
+    })
+    cantidad.addEventListener("mouseup", () => {
+        textarea.style.color = "black"
+    })
     bombas = []
-    valorTextarea.innerHTML = valorCantidad * valorCantidad
-    dibujarGrid(valorCantidad)
+/*     casillasMarcadas = []
+ */    textarea.innerHTML = document.getElementById("cantidad").value
+    dibujarFlex(document.getElementById("cantidad").value)
+    posicionCasillas(casillasTablero)
     ramdomBombas()
     dibujarBombas()
-}
-
-function juego(item) {
-    const casillaAbierta = item.target.parentNode
-    localizar(casillaAbierta)
-    dibujarNum(fila, columna, filas, columnas, casillaAbierta)
+    casillasTablero.forEach(element => {
+        element.addEventListener("change", function (evento) {
+            reconocerCercanos(evento)
+        })
+    })
+    
 }
 
 // onload
 prepararJuego()
+
 // on evento
-cantidad.addEventListener("input", async () => {
+cantidad.addEventListener("mouseup", async () => {
     prepararJuego()
 })
-
-listarCasillas().forEach(element => {
-    element.addEventListener("click", function (evento) {
-        juego(evento)
-    })
+cantidad.addEventListener("input", async () => {
+    textarea.innerHTML = document.getElementById("cantidad").value
 })
 
-
-
-
-/* if (fila > 0) {
-    const arriba = document.getElementById(Number(casillaAbierta.id) - valorCantidad);
-    if (arriba) {
-        arriba.style.border = border;
-    } */
