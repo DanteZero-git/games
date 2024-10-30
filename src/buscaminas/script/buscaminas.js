@@ -2,7 +2,7 @@ let cantidad = document.getElementById("cantidad")
 const valorCantidad = Number(document.getElementById("cantidad").value)
 const textarea = document.getElementById("cantidadInfo")
 const contenedorTablero = document.getElementById("contenedorTablero")
-const ramdom = 20 // es porcentaje
+const ramdom = 60 // es porcentaje
 
 // valores min y max del input
 let valoresCuadricula = []
@@ -22,13 +22,12 @@ function dibujarFlex(par) {
             height: 100%;
             overflow: auto;
             scrollbarWidth: none;
+            position: relative;
         }
-
         .ul {
             width: 100%;
             display: flex;
         }
-
         .li {
             position: relative;
             width: calc(100% / ${cantidad.value});
@@ -38,19 +37,17 @@ function dibujarFlex(par) {
             border-radius: 12%;
             font-size: 8px;
         }
-
         .check {
             all: unset;
-            background-color: grey;
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             cursor: pointer;
+            color: white;
         }
 `
-
     contenedorTablero.innerHTML = ""
     contenedorTablero.classList.add("contenedorTablero")
     for (let a = 0; a < cantidad.value; a++) {
@@ -60,7 +57,6 @@ function dibujarFlex(par) {
             const li = document.createElement("li")
             li.classList.add("li")
             li.id = `${a * cantidad.value + b}`
-            li.innerHTML = `${li.id}`
 
             const check = document.createElement("input")
             check.classList.add("check")
@@ -101,22 +97,20 @@ function ramdomBombas() {
 function dibujarBombas() {
     bombas.forEach(element => {
         element.classList.add("bomba")
-        element.style.backgroundColor = "red"
+        element.style.boxShadow = "inset 0 0 12px red" // bombas visibles
     })
 }
 
-
 // escribe los valores de bombas cercanas
-let casillasAbiertas = []
-function reconocerCercanos(evento) {
-    const par = [evento.target.parentNode]
-    evento.disabled=true
-    let contadorBombas = 0
+function buscarCercanos(parametro) {
+    const par = Array.isArray(parametro) ? parametro : [parametro.target.parentNode]
+    let casillasAbiertas = []
     par.forEach(element => {
-        if (!bombas.includes(element)) {
+        if (element.classList.contains("abierta")) { return }
+        if (!bombas.includes(element) && !element.classList.contains("marcadaBomba")) {
+            let contadorBombas = 0
             const fila = element.getAttribute("fila")
             const columna = element.getAttribute("columna")
-
             const cercanos = [
                 { posicion: "izq", casilla: document.getElementById(Number(element.id) - 1) },
                 { posicion: "cen", casilla: document.getElementById(Number(element.id)) },
@@ -130,37 +124,81 @@ function reconocerCercanos(evento) {
             ]
             cercanos.forEach(item => {
                 if (item.casilla) {
+                    item.disabled = true
                     const filaItem = Number(item.casilla.getAttribute("fila"))
                     const columnaItem = Number(item.casilla.getAttribute("columna"))
-                    console.log(columnaItem)
                     const filaArriba = filaItem + 1 == fila && ["arIzq", "arCen", "arDer"].includes(item.posicion)
                     const filaAbajo = filaItem - 1 == fila && ["abIzq", "abCen", "abDer"].includes(item.posicion)
                     const filaCentro = filaItem == fila && ["izq", "cen", "der"].includes(item.posicion)
 
                     if (item.casilla) {
                         if ((filaArriba || filaCentro || filaAbajo) && !item.casilla.classList.contains("bomba")) {
-                            item.casilla.style.border = "2px solid black"
+                            if (item.posicion != "cen") {
+                                casillasAbiertas.push(item.casilla)
+                            }
                         }
-                        if (item.casilla.classList.contains("bomba") 
-                            && (columnaItem  == columna || columnaItem + 1 == columna || columnaItem - 1 == columna)) {
+                        if (item.casilla.classList.contains("bomba")
+                            && (columnaItem == columna || columnaItem + 1 == columna || columnaItem - 1 == columna)) {
                             contadorBombas += 1
                         }
                     }
                 }
             })
-            element.style.fontSize = "22px"
-            element.style.display = "flex"
-            element.style.alignItems = "center"
-            element.style.justifyContent = "center"
-            element.innerHTML = contadorBombas
+            element.children[0].style.fontSize = "22px"
+            element.children[0].style.color = "white"
+            element.children[0].style.display = "flex"
+            element.children[0].style.alignItems = "center"
+            element.children[0].style.justifyContent = "center"
+            element.children[0].innerHTML = contadorBombas
+            element.children[0].style.backgroundColor = "rgb(80, 80, 80)"
+            element.children[0].style.boxShadow = "inset 6px 8px 10px black"
+            element.children[0].style.borderRadius = "12%"
+            element.classList.add("abierta")
         }
     })
-    console.log(casillasAbiertas)
+    return casillasAbiertas
+}
 
-    /*     if (casillasAbiertas.length > 0) {
-            reconocerCercanos()
+function abrirCasillas(click) {
+    const cercanos = buscarCercanos(click)
+    buscarCercanos(cercanos)
+}
+
+function marcarBomba(botonDerecho) {
+    botonDerecho.preventDefault() // para deshabilitar el menu contextual
+    const casilla = botonDerecho.target.parentNode
+    if (!casilla.classList.contains("abierta")) {
+        if (!casilla.style.backgroundImage) {
+            casilla.classList.add("marcadaBomba")
+            casilla.style.backgroundImage = `url("../icons/buscaminas/bomba2.png")`
+            casilla.style.backgroundSize = "contain"
+            casilla.style.backgroundRepeat = "no-repeat"
+            casilla.style.backgroundPosition = "center"
+            casilla.style.backgroundColor = "rgb(80, 80, 80)"
+            casilla.style.boxShadow = "inset 6px 8px 10px black"
+        } else {
+            casilla.classList.remove("marcadaBomba")
+            casilla.style.backgroundImage = ""
+            casilla.style.backgroundColor = ""
+            casilla.style.boxShadow = ""
         }
-     */
+    }
+}
+
+function finJuego(click) {
+    const casilla = click.target
+    if (casilla.parentNode.classList.contains("bomba")) {
+        const fin = document.createElement("div")
+        fin.style.width = "100%"
+        fin.style.height = "100%"
+        fin.style.position = "absolute"
+        fin.style.top = 0
+        fin.style.backgroundImage = 'url("../icons/buscaminas/boom1.png")'
+        fin.style.backgroundSize = "contain"
+        fin.style.backgroundRepeat = "no-repeat"
+        fin.style.backgroundPosition = "center"
+        contenedorTablero.appendChild(fin)
+    }
 }
 
 // ###############################################################
@@ -178,12 +216,18 @@ function prepararJuego(evento) { // se recoge el evento y se pasa a la funcion '
     posicionCasillas(casillasTablero)
     ramdomBombas()
     dibujarBombas()
-    casillasTablero.forEach(element => {
-        element.addEventListener("change", function (evento) {
-            reconocerCercanos(evento)
+    casillasTablero.forEach(casilla => {
+        casilla.addEventListener("change", function (evento) {
+            abrirCasillas(evento)
+        })
+        casilla.addEventListener("contextmenu", function (evento) {
+            marcarBomba(evento)
+        })
+        casilla.addEventListener("click", function (evento) {
+            finJuego(evento)
         })
     })
-    
+
 }
 
 // onload

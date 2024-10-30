@@ -7,7 +7,7 @@ main {
     height: calc(100% - 100px);
     display: flex;
     justify-content: center;
-    
+
     .contenedor {
         border: 1px solid rgb(17, 75, 52);
         width: 80%;
